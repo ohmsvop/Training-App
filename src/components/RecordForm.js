@@ -6,41 +6,20 @@ export default class RecordForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movement: props.record ? props.record.movement : '',
-      note: props.record ? props.record.note : '',
-      weight: props.record ? props.record.weight : '',
-      rep: props.record ? props.record.rep : '',
-      set: props.record ? props.record.set : '',
+      title: props.record ? props.record.title : '',
+      detail: props.record ? props.record.detail : '',
       createdAt: props.record ? moment(props.record.createdAt) : moment(),
       calendarFocused: false,
       error: ''
     };
   }
-  onMovementChange = (e) => {
-    const movement = e.target.value;
-    this.setState(() => ({ movement }));
+  onTitleChange = (e) => {
+    const title = e.target.value;
+    this.setState(() => ({ title }));
   };
-  onNoteChange = (e) => {
-    const note = e.target.value;
-    this.setState(() => ({ note }));
-  };
-  onWeightChange = (e) => {
-    const weight = e.target.value;
-    if (!weight || weight.match(/^\d+(\.\d{0,2})?$/)) {
-      this.setState(() => ({ weight }));
-    }
-  };
-  onRepChange = (e) => {
-    const rep = e.target.value;
-    if (!rep || rep.match(/^\d+$/)) {
-      this.setState(() => ({ rep }));
-    }
-  };
-  onSetChange = (e) => {
-    const set = e.target.value;
-    if (!set || set.match(/^\d+$/)) {
-      this.setState(() => ({ set }));
-    }
+  onDetailChange = (e) => {
+    const detail = e.target.value;
+    this.setState(() => ({ detail }));
   };
   onDateChange = (createdAt) => {
     if (createdAt) {
@@ -52,17 +31,14 @@ export default class RecordForm extends React.Component {
   };
   onSubmit = (e) => {
     e.preventDefault();
-    if (!this.state.movement || !this.state.weight || !this.state.rep || !this.state.set) {
-      this.setState(() => ({ error: 'Please provide movement, weight, rep, and set' }))
+    if (!this.state.title || !this.state.detail) {
+      this.setState(() => ({ error: 'Please provide title and detail' }))
     } else {
       this.setState(() => ({ error: '' }))
       this.props.onSubmit({
-        movement: this.state.movement,
-        weight: this.state.weight,
-        rep: this.state.rep,
-        set: this.state.set,
+        title: this.state.title,
         createdAt: this.state.createdAt.valueOf(),
-        note: this.state.note
+        detail: this.state.detail
       });
     }
   };
@@ -73,32 +49,11 @@ export default class RecordForm extends React.Component {
 
         <input
           type="text"
-          placeholder="Movement"
+          placeholder="Title"
           autoFocus
           className="text-input"
-          value={this.state.movement}
-          onChange={this.onMovementChange}
-        />
-        <input
-          type="text"
-          className="text-input"
-          placeholder="Weight"
-          value={this.state.weight}
-          onChange={this.onWeightChange}
-        />
-        <input
-          type="text"
-          className="text-input"
-          placeholder="Rep"
-          value={this.state.rep}
-          onChange={this.onRepChange}
-        />
-        <input
-          type="text"
-          className="text-input"
-          placeholder="Set"
-          value={this.state.set}
-          onChange={this.onSetChange}
+          value={this.state.title}
+          onChange={this.onTitleChange}
         />
         <SingleDatePicker
           date={this.state.createdAt}
@@ -110,9 +65,9 @@ export default class RecordForm extends React.Component {
         />
         <textarea
           className="textarea"
-          placeholder="Add a note for your record (optional)"
-          value={this.state.note}
-          onChange={this.onNoteChange}
+          placeholder="Add a detail for your record (optional)"
+          value={this.state.detail}
+          onChange={this.onDetailChange}
         >
         </textarea>
         <div>
